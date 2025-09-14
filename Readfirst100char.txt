@@ -1,0 +1,25 @@
+package assign2;
+
+import java.io.FileReader;
+import java.io.IOException;
+
+public class ReadCharsExample {
+    public static void main(String[] args) {
+        try {
+            FileReader reader = new FileReader("demo.txt"); // new file name
+            int i;
+            int count = 0;
+
+            System.out.println("First 100 characters from the file:\n");
+
+            while ((i = reader.read()) != -1 && count < 100) {
+                System.out.print((char) i);
+                count++;
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
