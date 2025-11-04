@@ -1,0 +1,86 @@
+RECHARGE SUGGESTION APP
+package Rk;
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class RechargePlanApp extends JFrame implements ActionListener {
+
+    JLabel lblData, lblTalk, lblResult;
+    JTextField txtData, txtTalk;
+    JButton btnSuggest;
+    JTextArea txtArea;
+
+    public RechargePlanApp() {
+        setTitle("Mobile Recharge Plan Suggestion");
+        setSize(400, 350);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new BorderLayout(10, 10));
+
+        // Input Panel
+        JPanel inputPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+        lblData = new JLabel("Data per day (in GB):");
+        lblTalk = new JLabel("Talktime (in mins):");
+        txtData = new JTextField();
+        txtTalk = new JTextField();
+        inputPanel.add(lblData);
+        inputPanel.add(txtData);
+        inputPanel.add(lblTalk);
+        inputPanel.add(txtTalk);
+
+        // Button Panel
+        JPanel buttonPanel = new JPanel();
+        btnSuggest = new JButton("Suggest Plan");
+        btnSuggest.addActionListener(this);
+        buttonPanel.add(btnSuggest);
+
+        // Result Panel
+        JPanel resultPanel = new JPanel(new BorderLayout());
+        lblResult = new JLabel("Suggested Plan:");
+        txtArea = new JTextArea(6, 25);
+        txtArea.setEditable(false);
+        txtArea.setLineWrap(true);
+        txtArea.setWrapStyleWord(true);
+        resultPanel.add(lblResult, BorderLayout.NORTH);
+        resultPanel.add(new JScrollPane(txtArea), BorderLayout.CENTER);
+
+        // Add panels to frame
+        add(inputPanel, BorderLayout.NORTH);
+        add(buttonPanel, BorderLayout.CENTER);
+        add(resultPanel, BorderLayout.SOUTH);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            double data = Double.parseDouble(txtData.getText());
+            int talk = Integer.parseInt(txtTalk.getText());
+            txtArea.setText(suggestPlan(data, talk));
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Please enter valid numbers!", "Input Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private String suggestPlan(double data, int talk) {
+        if (data <= 1 && talk <= 50)
+            return "Plan A: ₹149\n1GB/day + 50 mins talktime\nValidity: 14 days";
+        else if (data <= 1.5 && talk <= 100)
+            return "Plan B: ₹199\n1.5GB/day + 100 mins talktime\nValidity: 28 days";
+        else if (data <= 2.5 && talk <= 250)
+            return "Plan C: ₹299\n2.5GB/day + 250 mins talktime\nValidity: 28 days";
+        else if (data <= 4 && talk <= 500)
+            return "Plan D: ₹399\n4GB/day + 500 mins talktime\nValidity: 56 days";
+        else if (data <= 6 && talk <= 800)
+            return "Plan E: ₹499\n6GB/day + 800 mins talktime\nValidity: 84 days";
+        else
+            return "Plan F: ₹599\nUnlimited Data + Unlimited Talktime\nValidity: 84 days";
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new RechargePlanApp().setVisible(true);
+        });
+    }
+}
