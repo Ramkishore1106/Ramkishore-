@@ -1,0 +1,77 @@
+QUIZ APP BASED ON MVC
+package Rk;
+
+public class Question {
+    String question, option1, option2, option3, option4;
+    int correctAnswer;
+
+    public Question(String q, String o1, String o2, String o3, String o4, int ans) {
+        question = q; option1 = o1; option2 = o2; option3 = o3; option4 = o4; correctAnswer = ans;
+    }
+
+    public boolean checkAnswer(int answer) {
+        return answer == correctAnswer;
+    }
+}
+
+
+package Rk;
+import java.util.Scanner;
+
+public class QuizView {
+    Scanner sc = new Scanner(System.in);
+
+    public int displayQuestion(Question q) {
+        System.out.println("\n" + q.question);
+        System.out.println("1. " + q.option1);
+        System.out.println("2. " + q.option2);
+        System.out.println("3. " + q.option3);
+        System.out.println("4. " + q.option4);
+        System.out.print("Your answer (1-4): ");
+        return sc.nextInt();
+    }
+
+    public void showResult(int score, int total) {
+        System.out.println("\nYou scored " + score + " out of " + total);
+    }
+}
+
+
+
+package Rk;
+
+public class QuizController {
+    Question[] questions;
+    QuizView view;
+    int score = 0;
+
+    public QuizController(Question[] q, QuizView v) {
+        questions = q; view = v;
+    }
+
+    public void startQuiz() {
+        for (Question q : questions) {
+            int ans = view.displayQuestion(q);
+            if (q.checkAnswer(ans))
+                score++;
+        }
+        view.showResult(score, questions.length);
+    }
+}
+
+
+package Rk;
+
+public class MainQuiz {
+    public static void main(String[] args) {
+        Question[] q = {
+            new Question("Which language is used for OOP?", "C", "Java", "HTML", "Python", 2),
+            new Question("Which keyword is used to inherit a class?", "extends", "inherit", "super", "this", 1),
+            new Question("Which method starts execution in Java?", "main()", "start()", "init()", "run()", 1)
+        };
+
+        QuizView view = new QuizView();
+        QuizController controller = new QuizController(q, view);
+        controller.startQuiz();
+    }
+}
